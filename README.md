@@ -12,7 +12,7 @@ The IMU data will be extacted from Nexus and displayed in your browser.
 
 ![](images/BrowserPlot.png)
 
-![](video/imudataplotly.mp4)
+![](video/imudataplotly.gif)
 
 ## Requirements
 ### Versions:
