@@ -15,6 +15,12 @@ devicenames = vicon.GetDeviceNames()
 
 imudevicename = {}
 
+color_accel = '#065374'
+color_gyro = '#b61641'
+color_mag = '#20ac9e'
+color_global = '#73072f'
+color_highG = '#051876'
+
 for imudevicename in devicenames:
     if imudevicename in devicenames:
         imuid = vicon.GetDeviceIDFromName(imudevicename)
@@ -47,16 +53,34 @@ for imudevicename in devicenames:
         mag_y, chready, chrate = vicon.GetDeviceChannel(imuid, outputid, mag_IMU)
         mag_IMU = vicon.GetDeviceChannelIDFromName(imuid, outputid, 'z')
         mag_z, chready, chrate = vicon.GetDeviceChannel(imuid, outputid, mag_IMU)
+        
+        # read global ng
+        outputid = outputids[3]
+        gla_IMU = vicon.GetDeviceChannelIDFromName(imuid, outputid, 'x')
+        gla_x, chready, chrate = vicon.GetDeviceChannel(imuid, outputid, gla_IMU)
+        gla_IMU = vicon.GetDeviceChannelIDFromName(imuid, outputid, 'y')
+        gla_y, chready, chrate = vicon.GetDeviceChannel(imuid, outputid, gla_IMU)
+        gla_IMU = vicon.GetDeviceChannelIDFromName(imuid, outputid, 'z')
+        gla_z, chready, chrate = vicon.GetDeviceChannel(imuid, outputid, gla_IMU)
+
+        # read high g
+        outputid = outputids[4]
+        hig_IMU = vicon.GetDeviceChannelIDFromName(imuid, outputid, 'x')
+        hig_x, chready, chrate = vicon.GetDeviceChannel(imuid, outputid, hig_IMU)
+        hig_IMU = vicon.GetDeviceChannelIDFromName(imuid, outputid, 'y')
+        hig_y, chready, chrate = vicon.GetDeviceChannel(imuid, outputid, hig_IMU)
+        hig_IMU = vicon.GetDeviceChannelIDFromName(imuid, outputid, 'z')
+        hig_z, chready, chrate = vicon.GetDeviceChannel(imuid, outputid, hig_IMU)
 
         # plot
-        fig = tools.make_subplots(rows=3, cols=3, print_grid=False)
+        fig = tools.make_subplots(rows=5, cols=3, print_grid=False)
 
         trace1accel_IMU = go.Scatter(
             y=eccel_x,
             mode='lines',
             name='accelX',
             line=dict(
-                color='rgb(44, 62, 80)',
+                color= color_accel,
                 width=1)
         )
         trace2accel_IMU = go.Scatter(
@@ -64,7 +88,7 @@ for imudevicename in devicenames:
             mode='lines',
             name='accelY',
             line=dict(
-                color='rgb(44, 62, 80)',
+                color=color_accel,
                 width=1)
         )
         trace3accel_IMU = go.Scatter(
@@ -72,7 +96,7 @@ for imudevicename in devicenames:
             mode='lines',
             name='accelZ',
             line=dict(
-                color='rgb(44, 62, 80)',
+                color=color_accel,
                 width=1)
         )
         trace4gyro_IMU = go.Scatter(
@@ -80,7 +104,7 @@ for imudevicename in devicenames:
             mode='lines',
             name='gyroX',
             line=dict(
-                color='rgb(41, 128, 185)',
+                color=color_gyro,
                 width=1)
         )
         trace5gyro_IMU = go.Scatter(
@@ -88,7 +112,7 @@ for imudevicename in devicenames:
             mode='lines',
             name='gyroY',
             line=dict(
-                color='rgb(41, 128, 185)',
+                color=color_gyro,
                 width=1)
         )
         trace6gyro_IMU = go.Scatter(
@@ -96,7 +120,7 @@ for imudevicename in devicenames:
             mode='lines',
             name='gyroZ',
             line=dict(
-                color='rgb(41, 128, 185)',
+                color=color_gyro,
                 width=1)
         )
         trace7mag_IMU = go.Scatter(
@@ -104,7 +128,7 @@ for imudevicename in devicenames:
             mode='lines',
             name='magX',
             line=dict(
-                color='rgb(192, 57, 43)',
+                color=color_mag,
                 width=1)
         )
         trace8mag_IMU = go.Scatter(
@@ -112,7 +136,7 @@ for imudevicename in devicenames:
             mode='lines',
             name='magY',
             line=dict(
-                color='rgb(192, 57, 43)',
+                color= color_mag,
                 width=1)
         )
         trace9mag_IMU = go.Scatter(
@@ -120,7 +144,56 @@ for imudevicename in devicenames:
             mode='lines',
             name='magZ',
             line=dict(
-                color='rgb(192, 57, 43)',
+                color=color_mag,
+                width=1)
+        )
+        trace10gla_IMU = go.Scatter(
+            y=gla_x,
+            mode='lines',
+            name='glaX',
+            line=dict(
+                color=color_global,
+                width=1)
+        )
+        trace11gla_IMU = go.Scatter(
+            y=gla_y,
+            mode='lines',
+            name='glaY',
+            line=dict(
+                color=color_global,
+                width=1)
+        )
+        trace12gla_IMU = go.Scatter(
+            y=gla_z,
+            mode='lines',
+            name='glaZ', 
+            line=dict(
+                color=color_global,
+                width=1)
+        )
+        
+        trace13hig_IMU = go.Scatter(
+            y=hig_x,
+            mode='lines',
+            name='higX',
+            line=dict(
+                color=color_highG,
+                width=1)
+        )
+        trace14hig_IMU = go.Scatter(
+            y=hig_y,
+            mode='lines',
+            name='higY',
+            line=dict(
+                color=color_highG,
+                width=1)
+        )
+        trace15hig_IMU = go.Scatter(
+            y=hig_z,
+            mode='lines',
+            name='higZ', 
+            line=dict(
+                color=color_highG,
                 width=1)
         )
 
@@ -135,12 +208,21 @@ for imudevicename in devicenames:
         fig.append_trace(trace7mag_IMU, 3, 1)
         fig.append_trace(trace8mag_IMU, 3, 2)
         fig.append_trace(trace9mag_IMU, 3, 3)
+        
+        fig.append_trace(trace10gla_IMU, 4, 1)
+        fig.append_trace(trace11gla_IMU, 4, 2)
+        fig.append_trace(trace12gla_IMU, 4, 3)
+        
+        fig.append_trace(trace13hig_IMU, 5, 1)
+        fig.append_trace(trace14hig_IMU, 5, 2)
+        fig.append_trace(trace15hig_IMU, 5, 3)
+
 
         filename = dname + ' IMU.html'
 
         IMU_TrialName = SessionLoc + vicon.GetTrialName()[1] +' ' + filename
 
-        fig['layout'].update(height=2000, width=1800, title=dname + ' IMU Data')
+        fig['layout'].update(height=2000, width=1800, title=dname + ' IMU Data', plot_bgcolor='#adb5bd')
 
         offline.plot(fig, filename=IMU_TrialName)
 
