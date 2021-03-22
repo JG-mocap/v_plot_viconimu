@@ -1,8 +1,12 @@
+#!/usr/bin/python
+# -*- coding: iso-8859-15 -*-
 from __future__ import print_function
+import os, sys
 import ViconNexus
 from plotly import tools
 import plotly.offline as offline
-import plotly.graph_objs as go
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 import time
 
 print ('Generating IMU device graphs...')
@@ -72,157 +76,94 @@ for imudevicename in devicenames:
         hig_IMU = vicon.GetDeviceChannelIDFromName(imuid, outputid, 'z')
         hig_z, chready, chrate = vicon.GetDeviceChannel(imuid, outputid, hig_IMU)
 
-        # plot
-        fig = tools.make_subplots(rows=5, cols=3, print_grid=False)
-
-        trace1accel_IMU = go.Scatter(
-            y=eccel_x,
-            mode='lines',
-            name='accelX',
-            line=dict(
-                color= color_accel,
-                width=1)
-        )
-        trace2accel_IMU = go.Scatter(
-            y=eccel_y,
-            mode='lines',
-            name='accelY',
-            line=dict(
-                color=color_accel,
-                width=1)
-        )
-        trace3accel_IMU = go.Scatter(
-            y=eccel_z,
-            mode='lines',
-            name='accelZ',
-            line=dict(
-                color=color_accel,
-                width=1)
-        )
-        trace4gyro_IMU = go.Scatter(
-            y=gyro_x,
-            mode='lines',
-            name='gyroX',
-            line=dict(
-                color=color_gyro,
-                width=1)
-        )
-        trace5gyro_IMU = go.Scatter(
-            y=gyro_y,
-            mode='lines',
-            name='gyroY',
-            line=dict(
-                color=color_gyro,
-                width=1)
-        )
-        trace6gyro_IMU = go.Scatter(
-            y=gyro_z,
-            mode='lines',
-            name='gyroZ',
-            line=dict(
-                color=color_gyro,
-                width=1)
-        )
-        trace7mag_IMU = go.Scatter(
-            y=mag_x,
-            mode='lines',
-            name='magX',
-            line=dict(
-                color=color_mag,
-                width=1)
-        )
-        trace8mag_IMU = go.Scatter(
-            y=mag_y,
-            mode='lines',
-            name='magY',
-            line=dict(
-                color= color_mag,
-                width=1)
-        )
-        trace9mag_IMU = go.Scatter(
-            y=mag_z,
-            mode='lines',
-            name='magZ',
-            line=dict(
-                color=color_mag,
-                width=1)
-        )
-        trace10gla_IMU = go.Scatter(
-            y=gla_x,
-            mode='lines',
-            name='glaX',
-            line=dict(
-                color=color_global,
-                width=1)
-        )
-        trace11gla_IMU = go.Scatter(
-            y=gla_y,
-            mode='lines',
-            name='glaY',
-            line=dict(
-                color=color_global,
-                width=1)
-        )
-        trace12gla_IMU = go.Scatter(
-            y=gla_z,
-            mode='lines',
-            name='glaZ', 
-            line=dict(
-                color=color_global,
-                width=1)
-        )
+        # create plot area
+        fig = make_subplots(rows=5, cols=3, print_grid=False)
         
-        trace13hig_IMU = go.Scatter(
-            y=hig_x,
-            mode='lines',
-            name='higX',
-            line=dict(
-                color=color_highG,
-                width=1)
-        )
-        trace14hig_IMU = go.Scatter(
-            y=hig_y,
-            mode='lines',
-            name='higY',
-            line=dict(
-                color=color_highG,
-                width=1)
-        )
-        trace15hig_IMU = go.Scatter(
-            y=hig_z,
-            mode='lines',
-            name='higZ', 
-            line=dict(
-                color=color_highG,
-                width=1)
-        )
-
-        fig.append_trace(trace1accel_IMU, 1, 1)
-        fig.append_trace(trace2accel_IMU, 1, 2)
-        fig.append_trace(trace3accel_IMU, 1, 3)
-
-        fig.append_trace(trace4gyro_IMU, 2, 1)
-        fig.append_trace(trace5gyro_IMU, 2, 2)
-        fig.append_trace(trace6gyro_IMU, 2, 3)
-
-        fig.append_trace(trace7mag_IMU, 3, 1)
-        fig.append_trace(trace8mag_IMU, 3, 2)
-        fig.append_trace(trace9mag_IMU, 3, 3)
+        # add traces
+        fig.add_trace(go.Scatter(y=eccel_x, name = "Acceleration X", line=dict(
+            color= color_accel,width=1)),  row=1, col=1)
+        fig.update_xaxes(title_text="Frame nr", row=1, col=1)
+        fig.update_yaxes(title_text="Accel.x (mm/s<sup>2</sup>)", row=1, col=1)
         
-        fig.append_trace(trace10gla_IMU, 4, 1)
-        fig.append_trace(trace11gla_IMU, 4, 2)
-        fig.append_trace(trace12gla_IMU, 4, 3)
-        
-        fig.append_trace(trace13hig_IMU, 5, 1)
-        fig.append_trace(trace14hig_IMU, 5, 2)
-        fig.append_trace(trace15hig_IMU, 5, 3)
+        fig.add_trace(go.Scatter(y=eccel_y, name = "Acceleration Y", line=dict(
+            color= color_accel,width=1)), row=1, col=2)
+        fig.update_xaxes(title_text="Frame nr", row=1, col=2)
+        fig.update_yaxes(title_text="Accel.y (mm/s<sup>2</sup>)", row=1, col=2)
+       
+        fig.add_trace(go.Scatter(y=eccel_z, name = "Acceleration Z",line=dict(
+            color= color_accel,width=1)), row=1, col=3)
+        fig.update_xaxes(title_text="Frame nr", row=1, col=3)
+        fig.update_yaxes(title_text="Accel.z (mm/s<sup>2</sup>)", row=1, col=3)
 
+        fig.add_trace(go.Scatter(y=gyro_x, name = "Gyroscope X", line=dict(
+            color= color_gyro,width=1)), row=2, col=1)
+        fig.update_xaxes(title_text="Frame nr", row=2, col=1)
+        fig.update_yaxes(title_text="Gyro.x (deg/s)", row=2, col=1)
+
+        fig.add_trace(go.Scatter(y=gyro_y, name = "Gyroscope Y", line=dict(
+            color= color_gyro,width=1)), row=2, col=2)
+        fig.update_xaxes(title_text="Frame nr", row=2, col=2)
+        fig.update_yaxes(title_text="Gyro.y (deg/s)", row=2, col=2)
+
+        fig.add_trace(go.Scatter(y=gyro_z, name = "Gyroscope Z", line=dict(
+            color= color_gyro,width=1)), row=2, col=3)
+        fig.update_xaxes(title_text="Frame nr", row=2, col=3)
+        fig.update_yaxes(title_text="Gyro.z (deg/s)", row=2, col=3)
+
+        fig.add_trace(go.Scatter(y=mag_x, name = "Magnetometer X", line=dict(
+            color= color_mag,width=1)), row=3, col=1)
+        fig.update_xaxes(title_text="Frame nr", row=3, col=1)
+        fig.update_yaxes(title_text="Mag.x (T)", row=3, col=1)
+
+        fig.add_trace(go.Scatter(y=mag_y, name = "Magnetometer Y", line=dict(
+            color= color_mag,width=1)), row=3, col=2)
+        fig.update_xaxes(title_text="Frame nr", row=3, col=2)
+        fig.update_yaxes(title_text= "Mag. field.y (T)", row=3, col=2)
+        
+        fig.add_trace(go.Scatter(y=mag_z, name = "Magnetometer Z", line=dict(
+            color= color_mag,width=1)), row=3, col=3)
+        fig.update_xaxes(title_text="Frame nr", row=3, col=3)
+        fig.update_yaxes(title_text="Mag.z (T)", row=3, col=3)
+        
+        fig.add_trace(go.Scatter(y=gla_x, name = "Global Angle X", line=dict(
+            color= color_global,width=1)), row=4, col=1)
+        fig.update_xaxes(title_text="Frame nr", row=4, col=1)
+        fig.update_yaxes(title_text="Global angle.x (deg)", row=4, col=1)
+        
+        fig.add_trace(go.Scatter(y=gla_y, name = "Global Angle Y", line=dict(
+            color= color_global,width=1)), row=4, col=2)
+        fig.update_xaxes(title_text="Frame nr", row=4, col=2)
+        fig.update_yaxes(title_text="Global angle.y (deg)", row=4, col=2)
+        
+        fig.add_trace(go.Scatter(y=gla_z, name = "Global Angle Z", line=dict(
+            color= color_global,width=1)), row=4, col=3)
+        fig.update_xaxes(title_text="Frame nr", row=4, col=3)
+        fig.update_yaxes(title_text="Global angle.z (deg)", row=4, col=3)
+
+        fig.add_trace(go.Scatter(y=hig_x, name = "Global Angle X", line=dict(
+            color= color_highG,width=1)), row=5, col=1)
+        fig.update_xaxes(title_text="Frame nr", row=5, col=1)
+        fig.update_yaxes(title_text="HighG.x (deg)", row=5, col=1)
+        
+        fig.add_trace(go.Scatter(y=hig_y, name = "Global Angle Y", line=dict(
+            color= color_highG,width=1)), row=5, col=2)
+        fig.update_xaxes(title_text="Frame nr", row=5, col=2)
+        fig.update_yaxes(title_text="HighG.y (deg)", row=5, col=2)
+        
+        fig.add_trace(go.Scatter(y=hig_z, name = "Global Angle Z", line=dict(
+            color= color_highG,width=1)), row=5, col=3)
+        fig.update_xaxes(title_text="Frame nr", row=5, col=3)
+        fig.update_yaxes(title_text="HighG.z (deg)", row=5, col=3)
+        
+        fig.update_layout(legend_title_text='IMU Outputs')
+        fig.update_layout(font_family="Oswald",
+                          font_color="#2f3640")
 
         filename = dname + ' IMU.html'
 
         IMU_TrialName = SessionLoc + vicon.GetTrialName()[1] +' ' + filename
 
-        fig['layout'].update(height=2000, width=1800, title=dname + ' IMU Data', plot_bgcolor='#adb5bd')
+        fig['layout'].update(height=1800, width=1600, title=dname + ' IMU Data', plot_bgcolor='#dcdde1')
 
         offline.plot(fig, filename=IMU_TrialName)
 
