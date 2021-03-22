@@ -9,13 +9,13 @@ The IMU data will be extacted from Nexus and displayed in your browser.
 ![](images/IMUDataNexus.png)
 #### IMU devices in Vicon Nexus 2.11 
 
-#### IMU device data graphed in Vicon Nexus 2.11
+
 ![](images/IMUDataNexusGraph.png)
 #### IMU device data graphed in Vicon Nexus 2.11
 
-#### IMU device data graphed in browser using plotly
-![](video/imudataplotly.gif)
 
+![](video/imudataplotly.gif)
+#### IMU device data graphed in browser using plotly
 
 ## Requirements
 ### Versions:
