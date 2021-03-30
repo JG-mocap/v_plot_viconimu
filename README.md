@@ -7,11 +7,11 @@ To use the code you will need to have a trial (dataset) containing Vicon IMU dat
 The IMU data will be extacted from Nexus and displayed in your browser. 
 
 ![](images/IMUDataNexus.png)
-#### IMU devices in Vicon Nexus 2.11 
+#### IMU devices in Vicon Nexus 2.12 
 
 
 ![](images/IMUDataNexusGraph.png)
-#### IMU device data graphed in Vicon Nexus 2.11
+#### IMU device data graphed in Vicon Nexus 2.12
 
 
 ![](video/imudataplotly.gif)
