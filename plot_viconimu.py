@@ -2,16 +2,14 @@
 # -*- coding: iso-8859-15 -*-
 from __future__ import print_function
 import os, sys
-import ViconNexus
+from viconnexusapi import ViconNexus
 from plotly import tools
 import plotly.offline as offline
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
-import time
 
 print ('Generating IMU device graphs...')
 
-start_time = time.clock()
 vicon = ViconNexus.ViconNexus()
 SessionLoc = vicon.GetTrialName()[0]
 SubjectName = vicon.GetSubjectNames()
@@ -143,17 +141,17 @@ for imudevicename in devicenames:
         fig.add_trace(go.Scatter(y=hig_x, name = "Global Angle X", line=dict(
             color= color_highG,width=1)), row=5, col=1)
         fig.update_xaxes(title_text="Frame nr", row=5, col=1)
-        fig.update_yaxes(title_text="HighG.x (deg)", row=5, col=1)
+        fig.update_yaxes(title_text="mm/s<sup>2</sup>", row=5, col=1)
         
         fig.add_trace(go.Scatter(y=hig_y, name = "Global Angle Y", line=dict(
             color= color_highG,width=1)), row=5, col=2)
         fig.update_xaxes(title_text="Frame nr", row=5, col=2)
-        fig.update_yaxes(title_text="HighG.y (deg)", row=5, col=2)
+        fig.update_yaxes(title_text="mm/s<sup>2</sup>", row=5, col=2)
         
         fig.add_trace(go.Scatter(y=hig_z, name = "Global Angle Z", line=dict(
             color= color_highG,width=1)), row=5, col=3)
         fig.update_xaxes(title_text="Frame nr", row=5, col=3)
-        fig.update_yaxes(title_text="HighG.z (deg)", row=5, col=3)
+        fig.update_yaxes(title_text="mm/s<sup>2</sup>", row=5, col=3)
         
         fig.update_layout(legend_title_text='IMU Outputs')
         fig.update_layout(font_family="Oswald",
@@ -170,4 +168,4 @@ for imudevicename in devicenames:
     else:
         print('IMU device not found')
 
-print("Graphs Generated - Time Elapsed: {0:.4f} sec".format(time.clock() - start_time))
+print("Graphs Generated")
